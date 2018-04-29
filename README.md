@@ -12,5 +12,5 @@ The simplest tool, from a user perspective, is immediately available i.e. requir
 
 Image annotation tasks quickly become tedious, especially for big datasets and complex annotations like polygonal contours of shapes. Efficiency is met by minimizing the number of interactions, context switch, and visual overload. We value light user interface and optimize user experience by providing a **configurable interface** with a standard Json file. See more details in the "Getting started" page.
 
-In the following pages, we describe our tool, its usage, and introduce the code structure if you are interested in contributing. It's [open source](https://github.com/mpizenberg/annotation-app) after all!. Alternatives are presented in the last page if you're not convinced yet ;\)
+In the following pages, we describe our tool, its usage, and introduce the code structure if you are interested in contributing. It's [open source](https://github.com/mpizenberg/annotation-app) after all! Alternatives are presented in the last page if you're not convinced yet ;\)
 
