@@ -86,5 +86,170 @@ Now click on the bottom "Preview" button. It moves you to the third tab, a notif
 
 ![](.gitbook/assets/mturk-requester-project-created.png)
 
+## Publishing a batch of HITs
 
+Now that our template is ready, we can generate all our HITs with just one CSV file. Click on the "Publish Batch" button to create a batch of HITs. Load a [CSV file](https://mpizenberg.github.io/resources/annotation-app/mturk-batch.csv) containing the following text \(with no extra space! be careful\).
+
+{% code-tabs %}
+{% code-tabs-item title="mturk-batch.csv" %}
+```text
+img_width,img_height,img_url
+500,200,https://picsum.photos/500/200
+500,300,https://picsum.photos/500/300
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Mturk will process the csv file, make the entries match to our template html, and generate template previews that should be correct this time around.
+
+![](.gitbook/assets/mturk-requester-preview.jpg)
+
+Hit the "Next" button. On the next page, adjust the batch names and other fields, and hit "Publish". That's it! Your tasks are now published, and should be available in roughly a minute to workers. In your "Manage" tab, you can now follow the progress of your hits.
+
+![](.gitbook/assets/mturk-requester-manage.png)
+
+## Worker side
+
+Now that your batch is published simply connect to the [worker sandbox site](https://workersandbox.mturk.com) and look for your tasks. I'll let you explore on your own.
+
+## Customizing the template
+
+{% hint style="info" %}
+Please read first the Getting started section to understand this section.
+{% endhint %}
+
+Just like with the normal version of this app, the mturk version can also be configured to only display the tools you need for your HITs. Let's have a second look at the template html file.
+
+{% code-tabs %}
+{% code-tabs-item title="mturk-template.html" %}
+```markup
+<div>
+	<input type="hidden" value="" name="annotation-data" id="annotation-data"/>
+	<style>html, body, .style-elements { height: 100% } #mturk_form { display: none }</style>
+	<script src="https://annotation-app.pizenberg.fr/elm-pep.js"></script>
+	<script src="https://annotation-app.pizenberg.fr/Main.js"></script>
+	<script charset="utf-8">
+		// Function returning the size of the container element for the app.
+		// In our case, the full layout viewport.
+		const layoutViewportSize = () => ({
+			width: document.documentElement.clientWidth,
+			height: document.documentElement.clientHeight
+		});
+		const containerSize = layoutViewportSize;
+
+		// The image to display
+		const img = {
+			width: ${img_width},
+			height: ${img_height},
+			url: "${img_url}"
+			// comment to prevent mturk templating system to merge those two '}'
+		};
+
+		// Set elm app flags
+		const flags = {
+			deviceSize: containerSize(),
+			mturkMode: true,
+			images: [img],
+			config: `{
+				"classes": [],
+				"annotations": [ "point", "bbox", "stroke", "outline", "polygon" ]
+			}`
+		};
+
+		// Start elm app.
+		const app = Elm.Main.fullscreen(flags);
+	</script>
+	<script src="https://annotation-app.pizenberg.fr/ports-mturk.js"></script>
+</div>
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+There are four important parts in this document.
+
+1. The `<input>` element
+2. The `#mturk_form` display style
+3. The `const img` variable
+4. The `const flags` variable
+
+### The &lt;input&gt; element and \#mturk\_form display style
+
+This whole template is embeded inside a form, in an iframe in the mturk worker website. The id of the form provided by mturk is `mturk_form`. When our application takes control of the iframe \(`const app = Elm.Main.fullscreen(flags);`\), it leaves the form and our scripts tags aside and start a new hierarchical DOM element. So the DOM ends up with a structure like the following:
+
+```markup
+<body>
+    <form id="mturk_form" method="post" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+        ... our input, style and script elements
+    </form>
+    <script language="Javascript">turkSetAssignmentID();</script>
+    <div style="height: 100%;">
+        ... our elm application
+    </div>
+</body>
+```
+
+Therefore our `<input value="" id="annotation-data"/>` is located inside the form and when the form will be submitted, the content of the input `value` will be submitted to mturk. The id `annotation-data` is thus important since it is used inside our `ports-mturk.js` script to update its value when clicking on the "Submit" button. The style `#mturk_form { display: none }` is applied because we do not want to clutter the interface with predefined mturk form, we want to manage the whole thing in our elm application.
+
+### The image to display
+
+Each HIT correspond to a different image to work on. If you remember, in our CSV file, we have the following entries:
+
+{% code-tabs %}
+{% code-tabs-item title="mturk-batch.csv" %}
+```text
+img_width,img_height,img_url
+500,200,https://picsum.photos/500/200
+500,300,https://picsum.photos/500/300
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Those `img_width`, ... correspond exactly to the html template variables used in the definition of the `img` variable:
+
+```javascript
+// The image to display
+const img = {
+	width: ${img_width},
+	height: ${img_height},
+	url: "${img_url}"
+	// comment to prevent mturk templating system to merge those two '}'
+};
+```
+
+### The elm application startup flags
+
+When starting the elm application, we do the following:
+
+```javascript
+// Set elm app flags
+const flags = {
+	deviceSize: containerSize(),
+	mturkMode: true,
+	images: [img],
+	config: `{
+		"classes": [],
+		"annotations": [ "point", "bbox", "stroke", "outline", "polygon" ]
+	}`
+};
+
+// Start elm app.
+const app = Elm.Main.fullscreen(flags);
+```
+
+In case you were asking yourself, yes, the "normal" application and the "mturk" version are actually the same application, started with different "flags". The "normal" application, introduced in the Getting started section is started with the flags:
+
+```javascript
+// Startup flags for the "normal" application
+const flags = {
+	deviceSize: containerSize(),
+	mturkMode: false,
+	images: [], // instead of [img]
+	config: null // instead of an actual Json config text
+};
+```
+
+The only thing that the `mturkMode` does is removing the buttons to load a config, load images, and replace the saving \(image\) button by a "Submit" button more familiar to mturk workers.
+
+In conclusion, any config that you can use in the "normal" application, you can use here by just putting it inside the multiline string back quote character. So refer to the Getting started section to know how to choose the configuration that best suits your needs.
 
