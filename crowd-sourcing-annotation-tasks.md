@@ -104,7 +104,7 @@ Mturk will process the csv file, make the entries match to our template html, an
 
 ![](.gitbook/assets/mturk-requester-preview.jpg)
 
-Hit the bottom right "Next" button. On the next page, adjust the batch name and other fields, and hit "Publish". That's it! Your tasks are now published, and should be available in roughly a minute to sandbox workers. In your "Manage" tab, you can now follow the progress of your hits.
+Hit \(pun intended\) the bottom right "Next" button. On the next page, adjust the batch name and other fields, and hit "Publish". That's it! Your tasks are now published, and should be available in roughly a minute to sandbox workers. In your "Manage" tab, you can now follow the progress of your HITs.
 
 ![](.gitbook/assets/mturk-requester-manage.png)
 
@@ -175,7 +175,7 @@ There are four important parts in this document.
 
 ### The &lt;input&gt; element and \#mturk\_form display style
 
-This whole template is embeded inside a form, in an iframe in the mturk worker website. The id of the form provided by mturk is `mturk_form`. When our application takes control of the iframe \(`const app = Elm.Main.fullscreen(flags);`\), it leaves the form and our scripts tags aside and start a new hierarchical DOM element. So the DOM ends up with a structure like the following:
+This whole template is embeded inside a form, in an iframe in the mturk worker website. The id of the form provided by mturk is `mturk_form`. When our application takes control of the iframe \(`const app = Elm.Main.fullscreen(flags);`\), it leaves the form and our scripts tags aside and starts a new hierarchical DOM element. So the DOM ends up with a structure like the following:
 
 ```markup
 <body>
@@ -193,7 +193,7 @@ Therefore our `<input value="" id="annotation-data"/>` is located inside the for
 
 ### The image to display
 
-Each HIT correspond to a different image to work on. If you remember, in our CSV file, we have the following entries:
+Each HIT corresponds to a different image to work on. If you remember, in our CSV file, we have the following entries:
 
 {% code-tabs %}
 {% code-tabs-item title="mturk-batch.csv" %}
@@ -237,7 +237,7 @@ const flags = {
 const app = Elm.Main.fullscreen(flags);
 ```
 
-In case you were asking yourself, yes, the "normal" application and the "mturk" version are actually the same application, started with different "flags". The "normal" application, introduced in the Getting started section is started with the flags:
+In case you were asking yourself, yes, the "normal" application and the "mturk" version are actually the same application, started with different "flags". The "normal" application, introduced in the Getting started page is started with the flags:
 
 ```javascript
 // Startup flags for the "normal" application
@@ -249,7 +249,7 @@ const flags = {
 };
 ```
 
-The only thing that the `mturkMode` does is removing the buttons to load a config, load images, and replace the saving \(image\) button by a "Submit" button more familiar to mturk workers.
+The only thing that the `mturkMode` does is removing the buttons to load a config, load images, and replaces the export \(image\) button by a textual "Submit" button more familiar to mturk workers.
 
 In conclusion, any config that you can use in the "normal" application, you can use here by just putting it inside the multiline string back quote character. So refer to the Getting started section to know how to choose the configuration that best suits your needs.
 
