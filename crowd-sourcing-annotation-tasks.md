@@ -4,13 +4,13 @@ description: Crowd-sourcing annotation tasks on online platforms.
 
 # Crowd-sourcing annotation tasks
 
-To annotate a small amount of data, one can just do it on their computer. For this, the default interface is supposed to be a perfect match. At the other end of the spectrum, some annotation tasks are just too huge, and need to be crowd-sourced. [Amazon Mechanical Turk](https://www.mturk.com/) \(mturk\) is the perfect service for that. It comes in two sides. A "**requester**" is defining a set of tasks while a "**worker**" is performing the tasks. Workers are payed by requesters through mturk service.
+To annotate a small amount of data, one can just do it on their computer. For this, the default interface is supposed to be a perfect match. At the other end of the spectrum, some annotation tasks are just too huge, and need to be crowd-sourced. [Amazon Mechanical Turk](https://www.mturk.com/) \(mturk\) is the perfect service for that. It comes in two sides. A "**requester**" is defining a set of tasks while a "**worker**" is performing those tasks. Workers are payed by requesters through mturk service.
 
 Mturk is based on the concept of a "**HIT**" \(Human Intelligence Task\) as the task unit. The simplest way of quantification in our case is **one image &lt;=&gt; one HIT**. In the following, I will describe first how to set up accounts on mturk, then how to use this annotation application for the HITs.
 
 ## Registering for sandbox accounts
 
-Defining "real" tasks on mturk is obviously going to cost you money. But fortunately, mturk also have testing equivalent of the normal requester and worker environments, called **sandbox** environments. So the first thing to do is to registering for a [requester sandbox](https://requestersandbox.mturk.com/) and a [worker sandbox](https://workersandbox.mturk.com/) account.
+Defining "real" tasks on mturk is obviously going to cost you money. But fortunately, mturk also have testing equivalent of the normal requester and worker environments, called **sandbox** environments. So the first thing to do is registering for a [requester sandbox](https://requestersandbox.mturk.com/) and a [worker sandbox](https://workersandbox.mturk.com/) account.
 
 ## Creating a project template
 
@@ -18,7 +18,7 @@ As a requester, create a new project by going to the "Create" tab and clicking o
 
 ![](.gitbook/assets/mturk-requester-create.jpg)
 
-Go to the "Other" category and click and "Create Project &gt;&gt;".
+Go to the "Other" category and click on "Create Project &gt;&gt;".
 
 ![](.gitbook/assets/mturk-requester-other.png)
 
@@ -26,7 +26,7 @@ In the tab "\(1\) Enter Properties", fill the fields as you wish but you need to
 
 ![](.gitbook/assets/mturk-requester-design.png)
 
-Now click on the "Source" button to edit the source code, and replace the code by the following one. The structure of this chunk of code is explained in the next section.
+Now click on the "Source" button to edit the source code, and replace the code by the following one. The structure of this chunk of code is explained in following sections.
 
 {% code-tabs %}
 {% code-tabs-item title="mturk-template.html" %}
@@ -82,7 +82,7 @@ If the "Source" button is not pressed, it means that mturk had a bug. It happens
 
 ![](.gitbook/assets/mturk-requester-source-out.png)
 
-Now click on the bottom "Preview" button. It moves you to the third tab, a notification like "Your project was successfully saved." and a preview of what your HIT would look like. The preview should be empty. Again, **this is normal, don't panic** ;\). In case you open your JavaScript browser console, you will even see a runtime error, of the kind "SyntaxError: missing } after ...". This error is due to mturk templating system. You will understand the reason for this in the next section. Now simply click on the bottom "Finish" button and you are done with the project template. You should be back to the "Create" tab with a new project entry looking like the following.
+Now click on the bottom "Preview" button. It moves you to the third tab. A notification like "Your project was successfully saved." and a preview of what your HIT would look like. The preview should be empty. Again, **this is normal, don't panic** ;\). In case you open your JavaScript browser console, you will even see a runtime error, of the kind "SyntaxError: missing } after ...". This error is due to mturk templating system. You will understand the reason for this in the next section. Now simply click on the bottom "Finish" button and you are done with the project template. You should be back to the "Create" tab with a new project entry looking like the following.
 
 ![](.gitbook/assets/mturk-requester-project-created.png)
 
@@ -104,7 +104,7 @@ Mturk will process the csv file, make the entries match to our template html, an
 
 ![](.gitbook/assets/mturk-requester-preview.jpg)
 
-Hit the "Next" button. On the next page, adjust the batch names and other fields, and hit "Publish". That's it! Your tasks are now published, and should be available in roughly a minute to workers. In your "Manage" tab, you can now follow the progress of your hits.
+Hit the bottom right "Next" button. On the next page, adjust the batch name and other fields, and hit "Publish". That's it! Your tasks are now published, and should be available in roughly a minute to sandbox workers. In your "Manage" tab, you can now follow the progress of your hits.
 
 ![](.gitbook/assets/mturk-requester-manage.png)
 
@@ -115,7 +115,7 @@ Now that your batch is published simply connect to the [worker sandbox site](htt
 ## Customizing the template
 
 {% hint style="info" %}
-Please read first the Getting started section to understand this section.
+Please read first the Getting started page to understand this section.
 {% endhint %}
 
 Just like with the normal version of this app, the mturk version can also be configured to only display the tools you need for your HITs. Let's have a second look at the template html file.
@@ -252,4 +252,11 @@ const flags = {
 The only thing that the `mturkMode` does is removing the buttons to load a config, load images, and replace the saving \(image\) button by a "Submit" button more familiar to mturk workers.
 
 In conclusion, any config that you can use in the "normal" application, you can use here by just putting it inside the multiline string back quote character. So refer to the Getting started section to know how to choose the configuration that best suits your needs.
+
+### The httpS constraint
+
+Mturk website is accessed through a secured SSL layer in HTTPS \(not HTTP\). So every request happening in our iframe must also be sent through an HTTPS connection. This has two implications.
+
+1. **All images addresses provided in your CSV file must be with an HTTPS address**
+2. In case our website is down \(https://annotation-app.pizenberg.fr\) the scripts tags whith JavaScripts files hosted at our website \(Main.js, elm-pep.js, ports-mturk.js\) will fail loading, and your workers won't have anything displayed. **To be safe, you can decide to host yourself those files at an address of your choosing as long as it is HTTPS**.
 
