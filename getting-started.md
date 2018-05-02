@@ -18,7 +18,7 @@ Let's imagine that you have this very peculiar and unique need of drawing a boun
 
 ![Cat chilling in a dark alley](.gitbook/assets/simple-bbox-cat%20%281%29.png)
 
-When saving, it generates a Json file containing your annotations. You can paste the content of file `annotations.json `in [JSONLint](https://jsonlint.com/) to have a human readable content. In this case, you will get something like below \(indented slightly differently\).
+When saving, it generates a Json file containing your annotations. You can paste the content of file `annotations.json` in [JSONLint](https://jsonlint.com/) to have a human readable content. In this case, you will get something like below \(indented slightly differently\).
 
 {% code-tabs %}
 {% code-tabs-item title="annotations.json" %}
