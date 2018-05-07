@@ -81,7 +81,7 @@ type alias Model =
 ```
 
 * The `viewParameters` field contains cached parameters precomputed for the view function, like the current device type \(phone, tablet, computer\) depending on window dimension, or other view-related parameters.
-* The `state` field contains the main state of our application i.e. the images loaded, the configuration chosen, the annotation performed etc. We will describe this further.
+* The `state` field contains the main state of our application i.e. the images loaded, the configuration chosen, the annotations performed etc. We will describe this further.
 * The `viewer` field contains the entity recording movements coordinates relative to the image frame and zoom ratio, in order to display correctly the annotations on the image.
 * Finally, `dragState` is constantly tracking the state of the pointer. Whether it is currently up or down and dragging from a given initial position.
 
@@ -99,13 +99,17 @@ It can be modeled as a finite state machine, visualized as the following diagram
 
 ![States of the application](.gitbook/assets/states-draw-io.svg)
 
-The application available at [https://annotation-app.pizenberg.fr/](https://annotation-app.pizenberg.fr/) starts in state 0 \(`NothingProvided`\) and provides a button to load images. In doing so, you reach state 1a \(`ImagesProvided`\), and then by providing a configuration you finally reach the state 2 \(`AllProvided`\). It is the state in which we can annotate images. Two messages called `LoadImages` and `ConfigLoaded` produce transitions in the state machine. They are detailed soon.
+The application available at [https://annotation-app.pizenberg.fr/](https://annotation-app.pizenberg.fr/) starts in state 0 \(`NothingProvided`\) and provides a button to load images. In doing so, you reach state 1a \(`ImagesProvided`\), and then by providing a configuration you finally reach the state 2 \(`AllProvided`\). It is the state in which we can annotate images. State 1b \(`ConfigProvided`\) should only be reachable by providing a config in startup flags \(see last section\) and no image. Two messages called `LoadImages` and `ConfigLoaded` produce transitions in the state machine. They are detailed soon.
 
 You may notice that images and tools are regrouped in collections called `Zipper`. A `Zipper` \([wikipedia](https://en.wikipedia.org/wiki/Zipper_%28data_structure%29), [lyahfgg](http://learnyouahaskell.com/zippers)\) is a very usefull collection. In our case, it is more or less a non empty list, in which at all times, there is one element selected. Since there is always a tool selected \(movement or annotation tool\) and always an image selected, it is the perfect collection type for this job.
 
 ### The messages
 
-All modifications of the model are understood by looking at the `Msg` type:
+All modifications of the model are understood by looking at the `Msg` type. The `update` function then performs the modifications of the model described by such a message.
+
+{% hint style="info" %}
+The following type definition may have change since this documentation was written. But for the purpose of describing the application behavior, it shouldn't be an issue.
+{% endhint %}
 
 ```text
 type Msg
@@ -139,7 +143,21 @@ type Msg
 
 ### The view
 
-Explain the four base view components: action bar, classes sidebar, images sidebar, annotations viewer
+![Application view in state &quot;AllProvided&quot;](.gitbook/assets/annotation-app-thin%20%281%29.jpg)
+
+The view of this application is based on four components, each implemented in its own module:
+
+1. The top action bar \(`src/View/ActionBar.elm`\)
+2. The center annotations viewer area \(`src/View/AnnotationsArea.elm`\)
+3. The right images sidebar \(`src/View/DatasetSideBar.elm`\)
+4. The left classes sidebar \(`src/View/ClassesSideBar.elm`\)
+
+Each of those view components may have different versions depending on the current state of the application. The action bar for example have four versions:
+
+* `emptyView : Parameters msg -> Element ...` : provides a bar with only one button to load images, in order to transition to the `ImagesProvided` state.
+* `viewImages : Parameters msg -> Element ...` : provides an additional button to load a config, in order to transition to the `AllProvided` state.
+* `viewAll : Parameters msg -> Zipper Tool -> Element ...` : provides a fully functional action bar, with the tools as specified in the configuration Json file.
+* `viewConfig : Parameters msg -> Zipper Tool -> Element ...` : provides a preview of the configuration loaded but not yet actionable. This is not visible in the "normal" app transitions, only if start flags \(see next section\) provided in the `index.html` file provide a config but no image.
 
 ### Startup and interactions with JavaScript
 
