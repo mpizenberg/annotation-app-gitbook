@@ -159,7 +159,108 @@ Each of those view components may have different versions depending on the curre
 * `viewAll : Parameters msg -> Zipper Tool -> Element ...` : provides a fully functional action bar, with the tools as specified in the configuration Json file.
 * `viewConfig : Parameters msg -> Zipper Tool -> Element ...` : provides a preview of the configuration loaded but not yet actionable. This is not visible in the "normal" app transitions, only if start flags \(see next section\) provided in the `index.html` file provide a config but no image.
 
+![Top action bar in states &apos;nothingProvided&apos;, &apos;ImagesProvided&apos; and &apos;AllProvided&apos;](.gitbook/assets/action-bar-0-1-2.png)
+
 ### Startup and interactions with JavaScript
 
-Explain Index.html with flags, and ports
+As explained at the end of the crowd-sourcing page, the application is started with initial values called flags. Currently, flags contains four objects.
+
+```javascript
+// Set elm app flags
+const flags = {
+	deviceSize: containerSize(),
+	mturkMode: true,
+	images: [img],
+	config: `{
+		"classes": [],
+		"annotations": [ "point", "bbox", "stroke", "outline", "polygon" ]
+	}`
+};
+
+// Start elm app.
+const app = Elm.Main.fullscreen(flags);
+```
+
+* `deviceSize` provides the initial size of the area allocated to the application in the html page.
+* `mturkMode` toggles a mode in which the action bar view does not show the buttons to load images or load a config. It also replaces the icon button to export annotation by a textual "Submit" button.
+* `images` contains a list of images \(url, width, height\) with an already available url, without having to locally load them in memory from the disk.
+* `config` can provide an already defined configuration, to avoid having to load a Json file later.
+
+The "normal" application, introduced in the Getting started page is started with no preloaded image or configuration. That is why it starts in the `NothingProvided` state. In order to reach the `ConfigProvided` state \(1b\), one should use flags with a valid config, and an empty images array.
+
+```javascript
+// Startup flags for the "normal" application
+const flags = {
+	deviceSize: containerSize(),
+	mturkMode: false,
+	images: [], // instead of [img]
+	config: null // instead of an actual Json config text
+};
+```
+
+Once the application is started, almost everything is managed using the Elm language. There are some interactions however, that still require communication with JavaScript due to lack of cover of some Web APIs in the Elm language. All **those interactions with JavaScript are called ports**, and are specified in two files:
+
+* The file `src/Ports.elm` in Elm side.
+* The file `static/ports.js` in JavaScript side.
+
+Those files are extremely small, and as such, we can put them here for explanations.
+
+{% code-tabs %}
+{% code-tabs-item title="Ports.elm" %}
+```text
+port module Ports exposing (..)
+
+import Json.Encode exposing (Value)
+import Packages.Device as Device exposing (Device)
+
+port resizes : (Device.Size -> msg) -> Sub msg
+
+port loadImageFile : { id : Int, file : Value } -> Cmd msg
+
+port imageLoaded : ({ id : Int, url : String, width : Int, height : Int } -> msg) -> Sub msg
+
+port loadConfigFile : Value -> Cmd msg
+
+port configLoaded : (String -> msg) -> Sub msg
+
+port export : Value -> Cmd msg
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Each name in the previous `Ports.elm` file are pretty explicit so I will just comment on the return types of those "port" function types. Each port returns either a `Cmd` \(command\) or a `Sub` \(Subscription\). From Elm side, a port generating a command is an outgoing port \(to JavaScript\) and a port generating a subscription is an incoming port. From JavaScript side, the relation to ports are reversed. Consequently, in the JS code, we "subscribe" to Elm outgoing ports and "send" to an Elm incoming port. You can see that in the `ports.js` file. Ports usually come in outgoing-incoming pairs but not necessarily. The `resizes` incomming port has no outgoing counterpart, and the reverse is true for the `export` port.
+
+{% code-tabs %}
+{% code-tabs-item title="ports.js" %}
+```javascript
+// Inform the Elm app when its container div gets resized.
+window.addEventListener("resize", () =>
+  app.ports.resizes.send(containerSize())
+);
+
+// Create an image object and send it back to the Elm app.
+app.ports.loadImageFile.subscribe(value => {
+  utils
+    .createImageObject(value.id, value.file)
+    .then(image => app.ports.imageLoaded.send(image))
+    .catch(error => console.log(error));
+});
+
+// Read config file as text and send it back to the Elm app.
+app.ports.loadConfigFile.subscribe(file => {
+  utils
+    .readJsonFile(file)
+    .then(fileAsText => app.ports.configLoaded.send(fileAsText))
+    .catch(error => console.log(error));
+});
+
+// Export / save annotations
+app.ports.export.subscribe(value => {
+  utils.download(JSON.stringify(value), "annotations.json", "application/json");
+});
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+Currently these ports are only designed to fit the needs of our Elm application. But if we shift a bit our point of view, **those ports can actually be interpreted as an API**. Since the Elm language is not very popular \(yet ^^\), one could simply create ports exposing to JavaScript functionalities \(messages\) of the application, and treat the Elm application just like a remote server.
 

@@ -4,6 +4,6 @@
 * [Getting started](getting-started.md)
 * [Crowd-sourcing annotation tasks](crowd-sourcing-annotation-tasks.md)
 * [Application code structure](application-code-structure.md)
-* Contribution and customization
+* [Contribution and customization](application-personalization.md)
 * [Alternatives](alternatives.md)
 
