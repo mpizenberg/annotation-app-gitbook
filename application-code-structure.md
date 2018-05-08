@@ -65,7 +65,7 @@ Our actual program is better described by the following diagram. The main challe
 
 The Elm runtime takes those side effect descriptions, perform them, and, whenever there is a result / an answer, transforms it into a `Msg` of our choosing and route it to the update function.
 
-![Elm TEA program](.gitbook/assets/tea-draw-io%20%281%29.svg)
+![The Elm Architecture \(TEA\)](.gitbook/assets/tea-draw-io%20%283%29.svg)
 
 ### The model states
 
