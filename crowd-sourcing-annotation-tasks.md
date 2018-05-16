@@ -6,7 +6,7 @@ description: Crowd-sourcing annotation tasks on online platforms.
 
 To annotate a small amount of data, one can just do it on their computer. For this, the default interface is supposed to be a perfect match. At the other end of the spectrum, some annotation tasks are just too huge, and need to be crowd-sourced. [Amazon Mechanical Turk](https://www.mturk.com/) \(mturk\) is the perfect service for that. It comes in two sides. A "**requester**" is defining a set of tasks while a "**worker**" is performing those tasks. Workers are payed by requesters through mturk service.
 
-Mturk is based on the concept of a "**HIT**" \(Human Intelligence Task\) as the task unit. The simplest way of quantification in our case is **one image **↔** one HIT**. In the following, I will describe first how to set up accounts on mturk, then how to use this annotation application for the HITs.
+Mturk is based on the concept of a "**HIT**" \(Human Intelligence Task\) as the task unit. The simplest way of quantification in our case is **one image** ↔ **one HIT**. In the following, I will describe first how to set up accounts on mturk, then how to use this annotation application for the HITs.
 
 ## Registering for sandbox accounts
 

@@ -149,10 +149,10 @@ Though you could theoretically have any number of variations, I strongly suggest
 
 For most annotation tasks, we also need to differentiate objects in the images. Typically each annotated area is attributed a "class" sometimes also called "label". The [PASCAL VOC](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/) dataset for example is composed of 20 classes, grouped by category. Those classes are:
 
-* _Person _: person
-* _Animal _: bird, cat, cow, dog, horse, sheep
-* _Vehicle _: aeroplane, bicycle, boat, bus, car, motorbike, train
-* _Indoor _: bottle, chair, dining table, potted plant, sofa, tv/monitor
+* _Person_ : person
+* _Animal_ : bird, cat, cow, dog, horse, sheep
+* _Vehicle_ : aeroplane, bicycle, boat, bus, car, motorbike, train
+* _Indoor_ : bottle, chair, dining table, potted plant, sofa, tv/monitor
 
 In our application, classes are specified in the Json config file. A strict corresponding config for PASCAL VOC classes would be as this [`config-pascal.json`](https://mpizenberg.github.io/resources/annotation-app/config-pascal.json) file:
 
