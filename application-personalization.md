@@ -25,7 +25,6 @@ Some simple features are purposely left undone and labelled "[**good first issue
 * [Keyboard shortcuts](https://github.com/mpizenberg/annotation-app/issues/3)
 * [Allow zooming with wheel](https://github.com/mpizenberg/annotation-app/issues/6)
 * [Using a different mouse cursor for each tool](https://github.com/mpizenberg/annotation-app/issues/18)
-* [Adding tooltips on buttons](https://github.com/mpizenberg/annotation-app/issues/21)
 
 ## Advanced customization
 
