@@ -78,11 +78,11 @@ Now your editing area should look like the following.
 
 ![](.gitbook/assets/mturk-requester-source.png)
 
-If the "Source" button is not pressed, it means that mturk had a bug. It happens sometimes, due to sign out or other mysterious mturk events. If you are like this, with the "Source" button pressed and the code pasted in, we can continue. Click again on the "Source" button to leave the source mode. Now you should have something looking like the following, which is totally normal.
+If the "Source" button is not shadowed, it means that mturk had a bug. It happens sometimes, due to sign out or other mysterious mturk events. If your editing area looks like this, with the "Source" button shadowed and the code pasted in, we can continue. Click again on the "Source" button to leave the source mode. Now you should have something looking like the following, which is totally normal.
 
 ![](.gitbook/assets/mturk-requester-source-out.png)
 
-Now click on the bottom "Preview" button. It moves you to the third tab. A notification like "Your project was successfully saved." and a preview of what your HIT would look like. The preview should be empty. Again, **this is normal, don't panic** ;\). In case you open your JavaScript browser console, you will even see a runtime error, of the kind "SyntaxError: missing } after ...". This error is due to mturk templating system. You will understand the reason for this in the next section. Now simply click on the bottom "Finish" button and you are done with the project template. You should be back to the "Create" tab with a new project entry looking like the following.
+Now click on the bottom "Preview" button. It moves you to the third tab and you should get a notification like "Your project was successfully saved." with a preview of what your HIT would look like. The preview should be empty. Again, **this is normal, don't panic** ;\). In case you open your JavaScript browser console, you will even see a runtime error, of the kind "SyntaxError: missing } after ...". This error is due to mturk templating system. You will understand the reason for this in the next section. Now simply click on the bottom "Finish" button and you are done with the project template. You should be back to the "Create" tab with a new project entry looking like the following.
 
 ![](.gitbook/assets/mturk-requester-project-created.png)
 
@@ -110,7 +110,7 @@ Hit \(pun intended\) the bottom right "Next" button. On the next page, adjust th
 
 ## Worker side
 
-Now that your batch is published simply connect to the [worker sandbox site](https://workersandbox.mturk.com) and look for your tasks. I'll let you explore on your own.
+Now that your batch is published, simply connect to the [worker sandbox site](https://workersandbox.mturk.com) and look for your tasks. I'll let you explore on your own.
 
 ## Customizing the template
 
@@ -237,7 +237,7 @@ const flags = {
 const app = Elm.Main.fullscreen(flags);
 ```
 
-In case you were asking yourself, yes, the "normal" application and the "mturk" version are actually the same application, started with different "flags". The "normal" application, introduced in the Getting started page is started with the flags:
+In case you were wondering, yes, the "normal" application and the "mturk" version are actually the same application, started with different "flags". The "normal" application, introduced in the Getting started page is started with the flags:
 
 ```javascript
 // Startup flags for the "normal" application
@@ -251,7 +251,7 @@ const flags = {
 
 The only thing that the `mturkMode` does is removing the buttons to load a config, load images, and replaces the export \(image\) button by a textual "Submit" button more familiar to mturk workers.
 
-In conclusion, any config that you can use in the "normal" application, you can use here by just putting it inside the multiline string back quote character. So refer to the Getting started section to know how to choose the configuration that best suits your needs.
+In conclusion, any config that you can use in the "normal" application, you can use here by just putting it inside the multi-line config string. So refer to the Getting started section to know how to choose the configuration that best suits your needs.
 
 ### The httpS constraint
 

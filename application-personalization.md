@@ -8,7 +8,7 @@ description: Describe contribution and library.
 
 In case you haven't noticed yet, I'm a pretty big fan of the [Elm programming language](http://elm-lang.org/). It provides a strong safety thanks to its type system, by forcing you to consider all cases that could happen. As a consequence, a program that compiles will **most likely never produce a runtime error**. The only bugs that can happen, are those related to the app behavior, or browser compatibility. Thus, contrary to most alternatives, this application should **perform extremely reliably**. If you find any bug, please report it by creating an issue in the [github project page](https://github.com/mpizenberg/annotation-app/issues).
 
-Whether you have an idea to improve the application, a question, feedback on a use case, a bug to report, implement a feature, ... **the best way to start contribution is communication**. You can find me on the [Elm slack](http://elmlang.herokuapp.com/) \(@mattpiz\) or simply create an issue on github. Before creating an issue, please search for an already existing similar one.
+Whether you have an idea to improve the application, a question, feedback on a use case, a bug to report, implement a feature, ... **the best way to start contributing is communication**. You can find me on the [Elm slack](http://elmlang.herokuapp.com/) \(@mattpiz\) or simply create an issue on github. Before creating an issue, please search for an already existing similar one.
 
 Currently issues are labelled with one or more of the following labels:
 
@@ -40,7 +40,7 @@ Customizations can be organized at four levels:
 
 The foundation of this application is the Elm package [`mpizenberg/elm-image-annotation`](https://github.com/mpizenberg/elm-image-annotation). It is designed as an API to create, modify and visualize geometric shapes useful in the context of image annotation.
 
-The primary geometric data structures are each defined in a separate module, under the `Annotation.Geometry` namespace. If you want to introduce a new geometric prior for annotations, this is the place where to create a new module.
+The primary geometric data structures are each defined in a separate module, under the `Annotation.Geometry` namespace. If you want to introduce a new geometric prior for annotations, this is where you can create a new module.
 
 * `Annotation.Geometry.BoundingBox`: provides functions to create, modify and serialize \(Json\) bounding boxes.
 * `Annotation.Geometry.Contour`: provides functions to create, modify and serialize \(Json\) countours, rather called polygons in this application.
@@ -48,7 +48,7 @@ The primary geometric data structures are each defined in a separate module, und
 * `Annotation.Geometry.Point`: provides functions to create, modify and serialize \(Json\) points.
 * `Annotation.Geometry.Stroke`: provides functions to create, modify and serialize \(Json\) strokes \(lines\).
 
-The package also have the following modules, defined in the `Annotation` namespace:
+The package also has the following modules, defined in the `Annotation` namespace:
 
 * `Annotation.Color`: exposes a `toString` function converting a Color into string usable in DOM elements like `"rgba(255,0,0,1)"`. It also exposes a color palette color-blind and print friendly.
 * `Annotation.Style`: defines types describing appearance of points, lines and fillings.
