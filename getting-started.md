@@ -177,11 +177,11 @@ To attribute a class to an annotation, first select the class in the left sideba
 ![Annotations of the class &quot;person&quot; are highlighted while the &quot;boat&quot; annotation is dimmed](.gitbook/assets/class-highlight.jpg)
 
 {% hint style="info" %}
-Colors are not used to differentiate classes for multiple reasons. 20 classes like in the Pascal VOC case would not have great color differences and might not be color-blind friendly. Letting the user customize colors would also add a configuration burden and thus prevent us from reaching our goal of simple efficient annotations. Instead we strive for the best defaults possible, by relying more on contrasts than hues. Please [open an issue on github](https://github.com/mpizenberg/annotation-app/issues) if this really is a problem in your case.
+Colors are not used to differentiate classes for multiple reasons. 20 classes like in the Pascal VOC case would not have great color differences and might not be color-blind friendly. Letting the user customize colors would also add a configuration burden and thus prevent us from reaching our goal of simple efficient annotations. Instead we strive for the best defaults possible, by relying more on contrasts than hues. Please share your use case in [issue \#29](https://github.com/mpizenberg/annotation-app/issues/29) if you have trouble with this.
 {% endhint %}
 
 {% hint style="info" %}
-It would also be useful to have classes informations next to annotated areas, to avoid searching in the classes sidebar for highlights. This is on the roadmap. Please follow issue [\#11](https://github.com/mpizenberg/annotation-app/issues/11) to get notified when this is available.
+It would also be useful to have classes information next to annotated areas, to avoid searching in the classes sidebar for highlights. This is on the roadmap. Please follow issue [\#11](https://github.com/mpizenberg/annotation-app/issues/11) to get notified when this is available.
 {% endhint %}
 
 Classes can have any number of hierarchical levels in the configuration. Simply replace a class by an object with two keys "category" and "classes" like in the example below \([`config-subclasses.json`](https://mpizenberg.github.io/resources/annotation-app/config-subclasses.json)\).
